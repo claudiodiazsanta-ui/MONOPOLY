@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f3d2e">
-<title>Bon Pastopoli</title>
+<title>BonPasPoly</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:#0f3d2e;color:#f4f1e6;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
@@ -34,7 +34,8 @@ h1,h2,h3{margin:.3em 0}
 .fam-row{display:flex;gap:8px;align-items:center;background:#0b2a20;border-radius:12px;padding:8px}
 /* ===== juego ===== */
 #game{display:flex;flex-direction:column;min-height:100dvh}
-#top{display:flex;gap:6px;overflow-x:auto;padding:6px;background:#0b2a20;position:sticky;top:0;z-index:5;align-items:stretch}
+#hdr{position:sticky;top:0;z-index:5;background:#0b2a20}
+#top{display:flex;gap:6px;overflow-x:auto;padding:6px;align-items:stretch}
 .chip{display:flex;align-items:center;gap:6px;padding:4px 8px 4px 4px;border-radius:30px;background:#14503b;flex:none;border:2px solid transparent;font-size:.8rem;line-height:1.1}
 .chip.turn{border-color:#ffd54a;background:#1f6b50}
 .chip.out{opacity:.35;text-decoration:line-through}
@@ -54,9 +55,7 @@ h1,h2,h3{margin:.3em 0}
 .cell .ic{font-size:2.6em;line-height:1}
 .cell.corner{font-size:1.7cqw;align-items:center;justify-content:center;text-align:center;flex-direction:column;font-weight:800}
 .cell.corner .ic{font-size:3.4em}
-.cell .own{position:absolute;right:1px;bottom:1px;width:1.9cqw;height:1.9cqw;border-radius:50%;border:1px solid #fff;z-index:2}
 .cell.mort .body{background:repeating-linear-gradient(45deg,#d9d9d9,#d9d9d9 3px,#eee 3px,#eee 6px);opacity:.75}
-.cell.l .own{left:1px;right:auto}
 .hs{display:inline-block;width:1.5cqw;height:1.5cqw;background:#2ecc40;border:1px solid #145a1e;border-radius:1px}
 .hs.H{width:3.4cqw;height:1.8cqw;background:#e11}
 .tks{position:absolute;inset:auto 0 1px 0;display:flex;flex-wrap:wrap;justify-content:center;pointer-events:none;z-index:3}
@@ -76,6 +75,15 @@ h1,h2,h3{margin:.3em 0}
 .die i.on{background:#222}
 .die.roll{animation:shake .12s infinite}
 @keyframes shake{0%{transform:rotate(-12deg) translateY(-2px)}50%{transform:rotate(10deg) translateY(2px)}100%{transform:rotate(-8deg)}}
+#center .dice3d{display:flex;gap:6cqw;perspective:70cqw;height:15cqw;align-items:center;justify-content:center}
+.dwrap{width:11cqw;height:11cqw;transform-style:preserve-3d}
+.cube{width:100%;height:100%;position:relative;transform-style:preserve-3d}
+.face{position:absolute;inset:0;background:linear-gradient(135deg,#fff,#e8e8e8);border-radius:1.8cqw;border:.2cqw solid #bbb;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:1.2cqw;backface-visibility:hidden}
+.face i{display:block;border-radius:50%;margin:10%}
+.face i.on{background:radial-gradient(circle at 35% 35%,#555,#111)}
+.f1{transform:translateZ(5.5cqw)}.f6{transform:rotateY(180deg) translateZ(5.5cqw)}.f3{transform:rotateY(90deg) translateZ(5.5cqw)}.f4{transform:rotateY(-90deg) translateZ(5.5cqw)}.f2{transform:rotateX(90deg) translateZ(5.5cqw)}.f5{transform:rotateX(-90deg) translateZ(5.5cqw)}
+.dwrap.throw{animation:toss 1.15s cubic-bezier(.3,.6,.4,1) both}
+@keyframes toss{0%{transform:translate(var(--sx),-30cqw) scale(1.7)}38%{transform:translate(calc(var(--sx)*.1),4cqw) scale(1)}52%{transform:translate(0,-7cqw) scale(1.18)}68%{transform:translate(0,2cqw) scale(1)}82%{transform:translate(0,-2cqw) scale(1.04)}100%{transform:translate(0,0) scale(1)}}
 #center .say{font-size:2.5cqw;font-weight:600;min-height:7cqw;max-width:90%}
 #side{width:100%;max-width:720px;margin:0 auto;padding:6px;display:flex;flex-direction:column;gap:8px}
 .panel{background:#14503b;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
@@ -117,11 +125,37 @@ h1,h2,h3{margin:.3em 0}
 .rank{display:flex;gap:10px;align-items:center;padding:6px 8px;background:#0b2a20;border-radius:10px}
 .net{position:fixed;top:4px;right:6px;z-index:9;font-size:.7rem;background:#7a2c20;color:#fff;border-radius:8px;padding:2px 8px;display:none}
 @media (min-aspect-ratio:1/1) and (min-width:820px){
-  #main{flex-direction:row;align-items:flex-start;height:calc(100dvh - 58px)}
-  #boardwrap{width:min(calc(100dvh - 66px),62vw);margin:0;flex:none}
+  #main{flex-direction:row;align-items:flex-start;height:calc(100dvh - 88px)}
+  #boardwrap{width:min(calc(100dvh - 96px),62vw);margin:0;flex:none}
   #side{flex:1;max-width:none;height:100%;overflow:auto;margin:0}
   #game{height:100dvh;overflow:hidden}
 }
+
+.cell.owned{box-shadow:inset 0 0 0 .6cqw var(--oc);background:color-mix(in srgb,var(--oc) 24%,#eaf3e2)}
+.cell .ob{position:absolute;z-index:2;width:4.4cqw;height:4.4cqw;border-radius:50%;border:.4cqw solid var(--oc);background-size:cover;background-position:center;text-align:center;font-size:2.6cqw;line-height:3.6cqw;font-style:normal;right:.5cqw;top:.5cqw;box-shadow:0 1px 2px rgba(0,0,0,.5)}
+.cell.b .ob{top:24%}
+.cell.l .ob{left:.5cqw;right:auto}
+.emgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:6px}
+.em{padding:6px;font-size:1.7rem;background:#0b2a20;border:2px solid transparent;border-radius:10px;line-height:1.1}
+.em.on{border-color:#ffd54a}
+.btnlike{display:block;text-align:center;background:#1f6b50;color:#f4f1e6;border-radius:12px;padding:12px 8px;font-weight:700;cursor:pointer;font-size:.9rem}
+#timer{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:3px 12px;height:26px;overflow:hidden;font-weight:800;font-size:.85rem;transition:background .3s}
+#timer .tb{position:absolute;left:0;top:0;bottom:0;transition:width .3s linear;opacity:.35;background:#000}
+#timer .tt,#timer .tn{position:relative}
+#timer .tn{font-size:1.05rem}
+#timer.bw{background:#f2f2f2;color:#111}
+#timer.yellow{background:#ffd54a;color:#2b2200}
+#timer.red{background:#e03a3e;color:#fff;animation:blink .5s infinite alternate}
+#timer.red .tn{font-size:1.25rem}
+@keyframes blink{from{filter:brightness(1)}to{filter:brightness(1.35)}}
+.fxbar{position:fixed;top:78px;left:50%;transform:translateX(-50%);z-index:35;background:#fff;color:#1b2b22;border-radius:14px;padding:10px 16px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.5);animation:fxin .3s,fxout .4s 3.2s forwards;max-width:92vw;font-size:.95rem}
+.fxbar .amt{font-size:1.5rem;font-weight:900;color:#c0392b;display:block}
+@keyframes fxin{from{transform:translate(-50%,-30px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+@keyframes fxout{to{opacity:0;transform:translate(-50%,-20px)}}
+.chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.pc{min-width:22px;height:22px;border-radius:5px;border:2px solid #fff;color:#111;font-size:.7rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.pc.m{opacity:.4;border-style:dashed}
+.np{opacity:.85}
 
 </style>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
@@ -241,13 +275,15 @@ function log(G, msg) { G.log.push(msg); if (G.log.length > 80) G.log.shift(); G.
 function E1(err) { return { err }; }
 E.P = P; E.cur = cur;
 
-E.newGame = function (list) {
+E.newGame = function (list, opts) {
+  opts = opts || {};
   const G = {
     v: 1,
     players: list.map(p => ({ id: p.id, name: p.name, color: p.color, emoji: p.emoji || '🙂', bot: !!p.bot, money: E.START_MONEY, pos: 0, jail: false, jt: 0, cards: [], out: false })),
     props: {}, turn: 0, phase: 'roll', dice: [1, 1], rollId: 0, dbl: 0, lastDouble: false, extra: false,
     pending: null, auction: null, auctionQueue: [], afterAuction: 'finish', trade: null, tradeId: 0,
     houses: 32, hotels: 12, log: [], seq: 0, winner: null, card: null, cardN: 0, moves: {}, turns: 0,
+    limit: opts.limit | 0, tEnd: 0, aEnd: 0, autoTurn: null, fx: null, fxN: 0,
   };
   BOARD.forEach((s, i) => { if (ownable(s)) G.props[i] = { o: null, h: 0, m: false }; });
   G.chance = shuffle(CHANCE.map((_, i) => i));
@@ -286,15 +322,15 @@ function netWorth(G, p) {
 E.netWorth = netWorth;
 
 /* ================= dinero y deudas ================= */
-function pay(G, p, amt, to) {
-  p.money -= amt;
+function pay(G, p, amt, to, why) {
+  p.money -= amt; G.fx = { n: ++G.fxN, from: p.id, to, amt, why: why || '' };
   if (to === 'bank') return;
   if (to === 'each') { const others = alive(G).filter(q => q !== p); const per = amt / others.length; others.forEach(q => q.money += per); return; }
   P(G, to).money += amt;
 }
 function charge(G, p, amt, to, why, then) {
   if (amt <= 0) return true;
-  if (p.money >= amt) { pay(G, p, amt, to); return true; }
+  if (p.money >= amt) { pay(G, p, amt, to, why); return true; }
   G.pending = { type: 'debt', pid: p.id, amt, to, why, then: then || null };
   G.phase = 'debt';
   log(G, `${p.name} debe ${amt} € (${why}) y no le llega: tiene que vender o hipotecar.`);
@@ -304,7 +340,7 @@ function checkDebt(G) {
   const d = G.pending; if (!d || d.type !== 'debt') return;
   const p = P(G, d.pid); if (!p || p.out) return;
   if (p.money >= d.amt) {
-    pay(G, p, d.amt, d.to); log(G, `${p.name} paga ${d.amt} € (${d.why}).`);
+    pay(G, p, d.amt, d.to, d.why); log(G, `${p.name} paga ${d.amt} € (${d.why}).`);
     G.pending = null;
     if (d.then && d.then.k === 'move') move(G, p, d.then.n); else finishResolve(G);
   }
@@ -322,7 +358,7 @@ function nextTurn(G) {
   const al = alive(G);
   if (al.length <= 1) { endGame(G, al[0]); return; }
   let i = G.turn; do { i = (i + 1) % G.players.length; } while (G.players[i].out);
-  G.turn = i; G.phase = 'roll'; G.dbl = 0; G.lastDouble = false; G.extra = false; G.pending = null; G.turns++;
+  G.turn = i; G.autoTurn = null; G.phase = 'roll'; G.dbl = 0; G.lastDouble = false; G.extra = false; G.pending = null; G.turns++;
   log(G, `Turno de ${G.players[i].name}.`);
 }
 function endGame(G, w) {
@@ -665,7 +701,7 @@ const ACT = {
 E.act = function (G, a) {
   if (G.winner) return { ok: false, err: 'La partida ha terminado.' };
   const p = P(G, a.pid); if (!p || p.out) return { ok: false, err: 'Jugador no válido.' };
-  const fn = ACT[a.k]; if (!fn) return { ok: false, err: 'Acción desconocida.' };
+  const fn = Object.prototype.hasOwnProperty.call(ACT, a.k) ? ACT[a.k] : null; if (!fn) return { ok: false, err: 'Acción desconocida.' };
   const r = fn(G, p, a);
   if (r && r.err) return { ok: false, err: r.err };
   checkDebt(G); checkWinner(G);
@@ -692,12 +728,12 @@ E.bot = function (G) {
   if (G.winner) return null;
   if (G.trade) {
     const t = G.trade, to = P(G, t.to);
-    if (to.bot) return { pid: to.id, k: val(G, t.offer) >= val(G, t.req) * 1.2 ? 'tradeAccept' : 'tradeDecline' };
+    if (to.bot && G.phase !== 'auction') return { pid: to.id, k: (!tradeErr(G, t) && val(G, t.offer) >= val(G, t.req) * 1.2) ? 'tradeAccept' : 'tradeDecline' };
   }
   if (G.phase === 'auction') {
     const a = G.auction, s = BOARD[a.sq];
     for (const b of alive(G)) {
-      if (!b.bot || a.passed.includes(b.id) || a.bidder === b.id) continue;
+      if (!(b.bot || G.autoTurn === b.id) || a.passed.includes(b.id) || a.bidder === b.id) continue;
       const v = s.price * (1 + 0.3 * ownInGroup(G, b.id, a.sq)) * 1.05;
       const nb = Math.max(10, a.bid + 10);
       if (nb <= v && nb <= b.money - 50) return { pid: b.id, k: 'bid', amt: nb };
@@ -705,7 +741,7 @@ E.bot = function (G) {
     }
     return null;
   }
-  const p = cur(G); if (!p || !p.bot) return null;
+  const p = cur(G); if (!p || (!p.bot && G.autoTurn !== p.id)) return null;
   switch (G.phase) {
     case 'roll': {
       if (p.jail) {
@@ -751,6 +787,28 @@ const LS = {
 };
 const COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6', '#e67e22', '#1abc9c', '#ff6fa5'];
 const EMOJIS = ['🐶', '🐱', '🦊', '🐸', '🐼', '🦁', '🐙', '🦄'];
+const EMOJI_LIST = ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🐔','🐧','🦆','🦉','🦄','🐴','🐝','🦋','🐢','🐙','🐬','🐳','🦈','🐊','🦖','🐲','🦍','🐘','🦒','🐺','🦔','🦜','🦀','🐞','🐌','👑','😎','🤠','🥷','👻','🤖','👽','🎩','⚽','🚂','🚀','🌟'];
+const AUCTION_MS = 25000;
+let soundOn = LS.get('bp_sound', true), AC = null, clockOff = 0, limitSet = LS.get('bp_limit', 90);
+function ac() { if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { } } if (AC && AC.state === 'suspended') AC.resume(); return AC; }
+function tone(f, d, type, v, when) {
+  if (!soundOn) return; const a = ac(); if (!a) return; when = when || 0;
+  const o = a.createOscillator(), g = a.createGain(), t0 = a.currentTime + when;
+  o.type = type || 'sine'; o.frequency.setValueAtTime(f, t0); g.gain.setValueAtTime(v || .2, t0); g.gain.exponentialRampToValueAtTime(.001, t0 + d);
+  o.connect(g); g.connect(a.destination); o.start(t0); o.stop(t0 + d + .03);
+}
+const SFX = {
+  ping() { tone(1100, .12, 'square', .13); },
+  pam() { tone(120, .55, 'sawtooth', .35); tone(70, .7, 'square', .35); try { navigator.vibrate && navigator.vibrate([200, 80, 200]); } catch (e) { } },
+  dice() { for (let i = 0; i < 9; i++) tone(180 + Math.random() * 260, .05, 'square', .07, i * .075 + Math.random() * .03); },
+  cash() { tone(1250, .09, 'triangle', .15); tone(1700, .16, 'triangle', .13, .08); },
+  buy() { [523, 659, 784].forEach((f, i) => tone(f, .15, 'triangle', .15, i * .09)); },
+  turn() { tone(660, .12, 'sine', .15); tone(880, .18, 'sine', .15, .11); try { navigator.vibrate && navigator.vibrate(120); } catch (e) { } },
+  jail() { tone(200, .25, 'sawtooth', .2); tone(150, .35, 'sawtooth', .2, .22); },
+  win() { [523, 659, 784, 1047, 784, 1047].forEach((f, i) => tone(f, .2, 'triangle', .18, i * .14)); },
+};
+document.addEventListener('pointerdown', () => { if (soundOn) ac(); }, { once: true });
+function toggleSound() { soundOn = !soundOn; LS.set('bp_sound', soundOn); if (soundOn) SFX.ping(); renderTop(); }
 const BOT_NAMES = ['Robot Pepe', 'Robot Lola', 'Robot Paco', 'Robot Rosa', 'Robot Juan', 'Robot Marta', 'Robot Luis', 'Robot Ana'];
 const eur = n => (Math.round(n)) + ' €';
 
@@ -806,6 +864,22 @@ function av(pid, cls) {
   return ph ? `<span class="av ${cls || ''}" style="background-image:url('${ph}');border-color:${p.color}"></span>`
     : `<span class="av ${cls || ''}" style="background:${p.color};border-color:#fff">${p.emoji || '🙂'}</span>`;
 }
+function pickAvatar(cur, cb) {
+  modal(`<h3>🎨 Elige tu ficha</h3><div class="muted">Un animalito o tu propia cara. Se guarda en este dispositivo.</div>
+    <div class="emgrid">${EMOJI_LIST.map(e => `<button class="em ${cur && cur.emoji === e && !cur.photo ? 'on' : ''}" data-e="${e}">${e}</button>`).join('')}</div>
+    <div class="row"><label class="btnlike">📷 Foto de la galería<input type="file" accept="image/*" id="pgal" style="display:none"></label>
+    <label class="btnlike">🤳 Hacerme un selfie<input type="file" accept="image/*" capture="user" id="pcam" style="display:none"></label></div>
+    <button class="dark" id="pno">Quitar foto (usar animalito)</button><button onclick="__bpClose()">Cerrar</button>`);
+  document.querySelectorAll('#modal .em').forEach(b => b.onclick = () => { closeModal(); cb({ emoji: b.dataset.e, photo: '' }); });
+  const ph = e => { const f = e.target.files[0]; if (f) readPhoto(f, d => { closeModal(); cb({ photo: d }); }); };
+  $('#pgal').onchange = ph; $('#pcam').onchange = ph;
+  $('#pno').onclick = () => { closeModal(); cb({ photo: '' }); };
+}
+function setMyAvatar(entryId, ch) {
+  const r = roster(), x = r.find(z => z.id === entryId); if (!x) return;
+  if (ch.emoji) x.emoji = ch.emoji; if (ch.photo !== undefined) x.photo = ch.photo;
+  saveRoster(r);
+}
 function avRoster(x, cls) {
   return x.photo ? `<span class="av ${cls || ''}" style="background-image:url('${x.photo}')"></span>` : `<span class="av ${cls || ''}" style="background:#2c7a5c">${x.emoji || '🙂'}</span>`;
 }
@@ -832,11 +906,11 @@ function homeHTML() {
   const sv = LS.get('bp_save', null), cr = LS.get('bp_client_room', null);
   const url = new URLSearchParams(location.search).get('sala');
   return `<div class="home">
-    <div class="logo">BON<br>PASTOPOLI</div>
-    <div class="sub">El Monopoly del Bon Pastor · en familia</div>
+    <div class="logo">BONPASPOLY</div>
+    <div class="sub">El juego del barrio del Bon Pastor · en familia</div>
     <div class="card"><div class="muted">Yo soy… (cada persona elige su nombre en su móvil)</div><div class="row"><span style="flex:none">${avRoster(m)}</span>
       <select id="me">${r.map(x => `<option value="${x.id}" ${x.id === m.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></div>
-      <button class="alt" id="bFam">👨‍👩‍👧 Familia: nombres y fotos</button></div>
+      <div class="row"><button class="alt" id="bAv">🎨 Mi ficha</button><button class="alt" id="bFam">👨‍👩‍👧 Familia</button></div></div>
     <button id="bCreate">🏠 Crear sala online</button>
     <div class="row"><input id="code" maxlength="4" placeholder="CÓDIGO" value="${esc((url || '').toUpperCase())}" autocapitalize="characters" style="text-transform:uppercase;text-align:center;letter-spacing:4px;font-weight:800"><button id="bJoin">🔑 Unirme</button></div>
     <button class="alt" id="bLocal">📱 Un solo dispositivo (tablet o pasar el móvil)</button>
@@ -849,9 +923,9 @@ function homeHTML() {
 
 function familyHTML() {
   const r = roster();
-  return `<div class="home"><h2>👨‍👩‍👧 Familia</h2><div class="muted">Pon nombre y foto a cada persona. Las fotos serán las fichas.</div>
+  return `<div class="home"><h2>👨‍👩‍👧 Familia</h2><div class="muted">Toca el dibujo para elegir animalito, foto o selfie. Esa será la ficha.</div>
   ${r.map(x => `<div class="fam-row" data-id="${x.id}">
-     <label style="cursor:pointer">${avRoster(x, 'big')}<input type="file" accept="image/*" class="ph" style="display:none"></label>
+     <span class="pav" style="cursor:pointer">${avRoster(x, 'big')}</span>
      <input class="nm" value="${esc(x.name)}" maxlength="14">
      <button class="red sm del" style="flex:none">✕</button></div>`).join('')}
   <button class="alt" id="fAdd">+ Añadir persona</button>
@@ -868,6 +942,8 @@ function lobbyHTML() {
    <div class="row"><button class="alt" id="lShare">📤 Compartir enlace</button><button class="alt" id="lCopy">📋 Copiar código</button></div>
    <div class="plist">${lobby.map(p => `<div class="pl">${av(p.id)}<div class="grow"><b>${esc(p.name)}</b> ${p.bot ? '🤖' : ''}<div class="muted">${p.bot ? 'Robot' : (p.connected === false ? 'desconectado' : 'conectado')}${p.id === me ? ' · tú' : ''}</div></div>
       ${host && p.bot ? `<button class="red sm" data-rm="${p.id}">Quitar</button>` : ''}</div>`).join('')}</div>
+   <button class="alt" id="lAv">🎨 Cambiar mi ficha</button>
+   ${host ? limitSelect() : ''}
    ${host ? `<div class="row"><button class="alt" id="lBot" ${lobby.length >= 8 ? 'disabled' : ''}>+ Robot</button><button id="lStart" ${lobby.length < 2 ? 'disabled' : ''}>▶ Empezar</button></div>` : ''}
    <button class="dark" id="lExit">Salir</button></div>`;
 }
@@ -875,13 +951,17 @@ function lobbyHTML() {
 function localSetupHTML() {
   const r = roster();
   return `<div class="home"><h2>📱 Un solo dispositivo</h2><div class="muted">Elige quién juega (de 2 a 8). Se turnan pasándose el aparato.</div>
-  <div class="plist">${r.map(x => `<label class="pl">${avRoster(x)}<span class="grow"><b>${esc(x.name)}</b></span><input type="checkbox" data-id="${x.id}" ${x.id === meEntry().id ? 'checked' : ''}></label>`).join('')}</div>
+  <div class="plist">${r.map(x => `<label class="pl"><span class="pav2" data-pid="${x.id}">${avRoster(x)}</span><span class="grow"><b>${esc(x.name)}</b></span><input type="checkbox" data-id="${x.id}" ${x.id === meEntry().id ? 'checked' : ''}></label>`).join('')}</div>
   <div class="row"><span style="flex:none">Robots:</span><select id="nbots"><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
+  ${limitSelect()}
   <button id="lcStart">▶ Empezar</button><button class="dark" id="lcBack">Volver</button></div>`;
 }
 
+function limitSelect() {
+  return `<div class="row"><span style="flex:none">⏱ Tiempo por turno:</span><select id="limitSel">${[[60, '1 minuto'], [90, '1 min 30 s'], [120, '2 minutos'], [0, 'Sin límite']].map(([v, l]) => `<option value="${v}" ${v === limitSet ? 'selected' : ''}>${l}</option>`).join('')}</select></div>`;
+}
 function gameShell() {
-  return `<div id="game"><div id="top"></div><div id="main"><div id="boardwrap"><div id="board"><div id="cells" style="display:contents"></div><div id="center"></div></div></div><div id="side"><div id="actions"></div><div class="tabs" id="tabs"></div><div class="tabbody" id="tabbody"></div></div></div></div>`;
+  return `<div id="game"><div id="hdr"><div id="top"></div><div id="timer" style="display:none"></div></div><div id="main"><div id="boardwrap"><div id="board"><div id="cells" style="display:contents"></div><div id="center"></div></div></div><div id="side"><div id="actions"></div><div class="tabs" id="tabs"></div><div class="tabbody" id="tabbody"></div></div></div></div>`;
 }
 
 /* ---------- eventos de pantallas ---------- */
@@ -890,6 +970,7 @@ function bind(name) {
   if (name === 'home') {
     $('#me').onchange = e => { LS.set('bp_me', e.target.value); show('home'); };
     on('bFam', () => show('family'));
+    on('bAv', () => { const m = meEntry(); pickAvatar(m, ch => { setMyAvatar(m.id, ch); show('home'); }); });
     on('bCreate', () => startHost(null));
     on('bJoin', () => { const c = $('#code').value.trim().toUpperCase(); if (c.length !== 4) return toast('El código tiene 4 letras'); startClient(c); });
     on('bLocal', () => show('local'));
@@ -902,20 +983,21 @@ function bind(name) {
     document.querySelectorAll('.fam-row').forEach(row => {
       const id = row.dataset.id, x = () => r.find(z => z.id === id);
       row.querySelector('.nm').oninput = e => { x().name = e.target.value; saveRoster(r); };
-      row.querySelector('.ph').onchange = e => { const f = e.target.files[0]; if (f) readPhoto(f, d => { x().photo = d; saveRoster(r); show('family'); }); };
+      row.querySelector('.pav').onclick = () => pickAvatar(x(), ch => { setMyAvatar(id, ch); show('family'); });
       row.querySelector('.del').onclick = () => { if (r.length <= 1) return toast('Tiene que quedar alguien'); if (confirm('¿Quitar a ' + x().name + '?')) { r.splice(r.indexOf(x()), 1); saveRoster(r); show('family'); } };
     });
     on('fAdd', () => { if (r.length >= 12) return; r.push({ id: 'f' + Date.now(), name: 'Nuevo', photo: '', emoji: EMOJIS[r.length % 8] }); saveRoster(r); show('family'); });
     on('fBack', () => show('home'));
-    on('fExp', () => { const b = new Blob([JSON.stringify(r)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'familia-bonpastopoli.json'; a.click(); });
+    on('fExp', () => { const b = new Blob([JSON.stringify(r)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'familia-bonpaspoly.json'; a.click(); });
     on('fImp', () => $('#fFile').click());
     $('#fFile').onchange = e => { const f = e.target.files[0]; if (!f) return; f.text().then(t => { try { const j = JSON.parse(t); if (Array.isArray(j) && j.length) { saveRoster(j.map((x, i) => ({ id: x.id || 'f' + i, name: String(x.name || '?').slice(0, 14), photo: x.photo || '', emoji: x.emoji || EMOJIS[i % 8] }))); show('family'); } } catch (er) { toast('Archivo no válido'); } }); };
   }
   if (name === 'local') {
     on('lcBack', () => show('home'));
+    document.querySelectorAll('.pav2').forEach(el => el.onclick = e => { e.preventDefault(); e.stopPropagation(); const r = roster(), x = r.find(z => z.id === el.dataset.pid); const chk = [...document.querySelectorAll('input[data-id]')].filter(c => c.checked).map(c => c.dataset.id); const nb = $('#nbots').value; pickAvatar(x, ch => { setMyAvatar(x.id, ch); show('local'); chk.forEach(id => { const c = document.querySelector(`input[data-id="${id}"]`); if (c) c.checked = true; }); const nbe = $('#nbots'); if (nbe) nbe.value = nb; }); });
     on('lcStart', () => {
       const r = roster(); const sel = [...document.querySelectorAll('input[data-id]:checked')].map(c => r.find(x => x.id === c.dataset.id));
-      const nb = +$('#nbots').value;
+      const nb = +$('#nbots').value; limitSet = +$('#limitSel').value; LS.set('bp_limit', limitSet);
       if (sel.length + nb < 2) return toast('Hacen falta al menos 2 jugadores');
       if (sel.length + nb > 8) return toast('Máximo 8');
       lobby = []; avatars = {};
@@ -926,13 +1008,22 @@ function bind(name) {
     });
   }
   if (name === 'lobby') {
-    on('lShare', () => { const link = location.href.split('?')[0] + '?sala=' + net.room; if (navigator.share) navigator.share({ title: 'Bon Pastopoli', text: 'Entra en mi sala: ' + net.room, url: link }).catch(() => { }); else { navigator.clipboard && navigator.clipboard.writeText(link); toast('Enlace copiado'); } });
+    on('lShare', () => { const link = location.href.split('?')[0] + '?sala=' + net.room; if (navigator.share) navigator.share({ title: 'BonPasPoly', text: 'Entra en mi sala de BonPasPoly: ' + net.room, url: link }).catch(() => { }); else { navigator.clipboard && navigator.clipboard.writeText(link); toast('Enlace copiado'); } });
     on('lCopy', () => { navigator.clipboard && navigator.clipboard.writeText(net.room); toast('Código copiado: ' + net.room); });
     on('lExit', exitToHome);
+    on('lAv', () => pickAvatar(meEntry(), ch => { setMyAvatar(meEntry().id, ch); applyProfile(me, ch.emoji, ch.photo); }));
+    const ls = $('#limitSel'); if (ls) ls.onchange = () => { limitSet = +ls.value; LS.set('bp_limit', limitSet); };
     on('lBot', () => { if (lobby.length >= 8) return; const i = nextFreeSlot(); lobby.push({ id: 'p' + i, key: 'bot' + i, name: BOT_NAMES[i % 8], color: COLORS[i % 8], emoji: '🤖', bot: true, connected: true }); lobbyChanged(); });
     on('lStart', () => { if (lobby.length < 2) return; startGame(); });
     document.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { lobby = lobby.filter(p => p.id !== b.dataset.rm); lobbyChanged(); });
   }
+}
+function applyProfile(pid, emoji, photo) {
+  if (net.role === 'client') { try { net.conn.send({ t: 'profile', emoji, photo }); } catch (e) { } return; }
+  const p = lobby.find(x => x.id === pid); if (!p) return;
+  if (emoji) p.emoji = emoji;
+  if (photo !== undefined) { if (photo) { avatars[pid] = photo; p.photo = photo; } else { delete avatars[pid]; p.photo = ''; } }
+  lobbyChanged();
 }
 function nextFreeSlot() { let i = 0; while (lobby.some(p => p.id === 'p' + i)) i++; return i; }
 
@@ -941,9 +1032,9 @@ function exitToHome() {
   teardown(); show('home');
 }
 function teardown() {
-  clearTimeout(botTimer); clearInterval(moveTimer); animating = false;
+  clearTimeout(botTimer); clearInterval(moveTimer); clearInterval(timerIv); animating = false;
   try { net.peer && net.peer.destroy(); } catch (e) { }
-  net = { role: null, peer: null, conn: null, conns: [], room: null }; G = null; me = null; lobby = []; avatars = {}; disp = null;
+  net = { role: null, peer: null, conn: null, conns: [], room: null }; G = null; me = null; lobby = []; avatars = {}; disp = null; clockOff = 0;
   LS.del('bp_client_room');
   try { wake && wake.release(); } catch (e) { } wake = null;
 }
@@ -963,7 +1054,7 @@ function startHost(saved) {
     me = 'p0';
   }
   lobby.forEach(p => { if (p.photo) avatars[p.id] = p.photo; });
-  const peer = new Peer('bonpastopoli-' + code);
+  const peer = new Peer('bonpaspoly-' + code);
   net.peer = peer;
   peer.on('open', () => { if (G) { disp = null; onState(G); show('game'); startGameLoops(); } else show('lobby'); });
   peer.on('error', e => {
@@ -978,8 +1069,12 @@ function startHost(saved) {
   });
 }
 
+function cleanEmoji(e) { return (typeof e === 'string' && e.length > 0 && e.length <= 8 && !/[<>&"'`]/.test(e)) ? e : undefined; }
+function cleanPhoto(f) { return (typeof f === 'string' && f.length < 80000 && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(f)) ? f : undefined; }
 function onHostMsg(conn, d) {
   if (!d || !d.t) return;
+  if (d.emoji !== undefined) d.emoji = cleanEmoji(d.emoji);
+  if (d.photo) d.photo = cleanPhoto(d.photo); else if (d.photo !== undefined && d.photo !== '') d.photo = undefined;
   if (d.t === 'join') {
     let p = lobby.find(x => x.key === d.key && !x.bot);
     if (!p) {
@@ -990,11 +1085,14 @@ function onHostMsg(conn, d) {
       lobby.push(p);
     }
     p.connected = true; p.bot = false; conn.pid = p.id;
+    if (G) { const gp = E.P(G, p.id); if (gp && gp.bot) { gp.bot = false; gp.miss = 0; } }
     if (d.photo) { avatars[p.id] = d.photo; p.photo = d.photo; }
     if (!net.conns.includes(conn)) net.conns.push(conn);
-    sendLobby(); if (G) { conn.send({ t: 'state', G }); }
+    sendLobby(); if (G) { conn.send({ t: 'state', G, now: Date.now() }); }
     if (screen === 'lobby') show('lobby'); else if (screen === 'game') renderTop();
     if (G) scheduleBot();
+  } else if (d.t === 'profile' && conn.pid) {
+    if (!G) applyProfile(conn.pid, d.emoji, d.photo);
   } else if (d.t === 'act' && conn.pid) {
     if (!G) return;
     const a = d.a || {}; a.pid = conn.pid; hostApply(a, conn);
@@ -1002,6 +1100,7 @@ function onHostMsg(conn, d) {
 }
 function onHostClose(conn) {
   net.conns = net.conns.filter(c => c !== conn);
+  if (net.conns.some(c => c.pid === conn.pid)) return;
   const p = lobby.find(x => x.id === conn.pid); if (!p) return;
   if (!G) { lobby = lobby.filter(x => x !== p); delete avatars[p.id]; sendLobby(); if (screen === 'lobby') show('lobby'); return; }
   p.connected = false; sendLobby(); if (screen === 'game') renderTop();
@@ -1018,7 +1117,7 @@ function startClient(code) {
   let tries = 0;
   const connect = () => {
     if (net.peer !== peer) return;
-    const conn = peer.connect('bonpastopoli-' + code, { reliable: true });
+    const conn = peer.connect('bonpaspoly-' + code, { reliable: true });
     net.conn = conn;
     let opened = false;
     conn.on('open', () => { opened = true; tries = 0; setNet(true); conn.send({ t: 'join', key, name: m.name, emoji: m.emoji, photo: m.photo || undefined }); LS.set('bp_client_room', code); });
@@ -1042,6 +1141,7 @@ function onClientMsg(d) {
     else if (screen === 'game') renderTop();
   } else if (d.t === 'state') {
     const first = !G;
+    if (d.now) clockOff = d.now - Date.now();
     onState(d.G);
     if (first || screen !== 'game') { show('game'); startGameLoops(); }
   } else if (d.t === 'err') toast(d.msg, 3000);
@@ -1049,31 +1149,47 @@ function onClientMsg(d) {
 
 /* ======================= PARTIDA ======================= */
 function startGame() {
-  G = E.newGame(lobby.map(p => ({ id: p.id, name: p.name, color: p.color, emoji: p.emoji, bot: p.bot })));
-  disp = null;
+  G = E.newGame(lobby.map(p => ({ id: p.id, name: p.name, color: p.color, emoji: p.emoji, bot: p.bot })), { limit: limitSet });
+  lastWinnerShown = false; showWinner.s = 0; disp = null; tKey = null; aKey = null; pauseAt = 0; shownFx = 0;
   lobby.forEach(p => { if (p.photo) avatars[p.id] = p.photo; });
   if (net.role === 'host') sendLobby();
   afterChange(true); onState(G);
   show('game'); startGameLoops();
 }
 function startGameLoops() {
+  clearInterval(timerIv); timerIv = setInterval(timerTick, 250);
   try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(w => wake = w).catch(() => { }); } catch (e) { }
   if (G && G.card) shownCardN = G.card.n;
   if (isHost()) scheduleBot();
 }
 function resumeSaved() {
   const sv = LS.get('bp_save', null); if (!sv) return;
+  tKey = null; aKey = null; pauseAt = 0; if (sv.G) { sv.G.autoTurn = null; stampTimersFor(sv.G); }
   if (sv.role === 'local') { net = { role: 'local', peer: null, conn: null, conns: [], room: 'LOCAL' }; lobby = sv.lobby; avatars = sv.avatars || {}; G = sv.G; me = null; disp = null; onState(G); show('game'); startGameLoops(); }
   else startHost(sv);
 }
+function stampTimersFor(g) { const keep = G; G = g; stampTimers(); G = keep; }
 function persist() {
   if (!isHost() || !G) return;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => { if (G.winner) LS.del('bp_save'); else LS.set('bp_save', { role: net.role, room: net.room, G, lobby: lobby.map(p => ({ ...p, photo: undefined })), avatars }); }, 400);
 }
+let tKey = null, aKey = null, pauseAt = 0, lastSec = null, shownFx = 0, prevTurnKey = null, prevOwned = -1, timerIv = null;
+function stampTimers() {
+  if (!G) return;
+  if (!G.limit || G.winner) { G.tEnd = 0; G.aEnd = 0; return; }
+  const now = Date.now(), k = G.turns + '|' + G.turn;
+  if (k !== tKey) { tKey = k; G.tEnd = now + G.limit * 1000; pauseAt = 0; }
+  if (G.phase === 'auction' && G.auction) {
+    if (!pauseAt) pauseAt = now;
+    const a = G.auction, ak = a.sq + '|' + a.bid + '|' + a.passed.length;
+    if (ak !== aKey) { aKey = ak; G.aEnd = now + AUCTION_MS; }
+  } else { aKey = null; G.aEnd = 0; if (pauseAt) { G.tEnd += now - pauseAt; pauseAt = 0; } }
+}
 function afterChange(first) {
+  stampTimers();
   persist();
-  net.conns.forEach(c => { try { c.send({ t: 'state', G }); } catch (e) { } });
+  net.conns.forEach(c => { try { c.send({ t: 'state', G, now: Date.now() }); } catch (e) { } });
   if (!first) onState(G); else { disp = null; }
   scheduleBot();
 }
@@ -1087,9 +1203,10 @@ function hostApply(a, conn) {
   if (a.k === 'closeAuction' || a.k === 'finishByWorth' || a.k === 'toggleBot') {
     if (conn) return err('Solo lo puede hacer el anfitrión.');
   }
-  if (a.k === 'toggleBot') { const p = E.P(G, a.target); if (p) { p.bot = !p.bot; const l = lobby.find(x => x.id === p.id); if (l && !l.connected) l.bot = p.bot; } afterChange(); return; }
+  if (a.k === 'toggleBot') { const p = E.P(G, a.target); if (p) { p.bot = !p.bot; p.miss = 0; const l = lobby.find(x => x.id === p.id); if (l && !l.connected) l.bot = p.bot; } afterChange(); return; }
   const r = E.act(G, a);
   if (!r.ok) return err(r.err);
+  const ap = E.P(G, a.pid); if (ap && ap.miss && G.autoTurn !== a.pid && !ap.bot && ['roll', 'buy', 'end', 'auction', 'bid', 'pass'].includes(a.k)) ap.miss = 0;
   afterChange();
 }
 function scheduleBot() {
@@ -1098,19 +1215,56 @@ function scheduleBot() {
   botTimer = setTimeout(() => {
     if (animating) return scheduleBot();
     const a = E.bot(G); if (!a) return;
-    const r = E.act(G, a); if (!r.ok) { console.warn('bot', r.err, a); return; }
+    const r = E.act(G, a); if (!r.ok) console.warn('bot', r.err, a);
     afterChange();
   }, 1200);
+}
+
+/* ---------- temporizador ---------- */
+function timerTick() {
+  const el = $('#timer'); if (!el || !G) return;
+  if (!G.limit || G.winner) { el.style.display = 'none'; return; }
+  const aud = G.phase === 'auction' && G.aEnd, end = aud ? G.aEnd : G.tEnd;
+  if (!end) { el.style.display = 'none'; return; }
+  const left = Math.max(0, Math.ceil((end - (Date.now() + clockOff)) / 1000));
+  const total = aud ? AUCTION_MS / 1000 : G.limit, warn = Math.min(45, total / 2);
+  const lvl = left <= 10 ? 'red' : left <= warn ? 'yellow' : 'bw';
+  const cp = E.cur(G);
+  el.style.display = 'flex'; el.className = lvl;
+  el.innerHTML = `<div class="tb" style="width:${Math.min(100, left / total * 100)}%"></div><span class="tt">${aud ? '🔨 Subasta' : '⏱ ' + esc(cp.name)}${G.autoTurn && !aud ? ' · 🤖 piloto automático' : ''}</span><b class="tn">${left}s</b>`;
+  if (left !== lastSec) {
+    if (left <= 10 && left > 0) SFX.ping();
+    if (left === 0 && lastSec > 0) SFX.pam();
+    lastSec = left;
+  }
+  if (left <= 0 && isHost()) expire(aud);
+}
+function anyAlive() { const a = E.alive(G)[0]; return a ? a.id : null; }
+function expire(aud) {
+  if (!G || G.winner) return;
+  if (aud) { hostApply({ k: 'closeAuction', pid: anyAlive() }, null); return; }
+  if (G.autoTurn) return;
+  const cp = E.cur(G); if (cp.bot) return;
+  G.autoTurn = cp.id; cp.miss = (cp.miss || 0) + 1;
+  G.log.push(`⏰ Se acabó el tiempo de ${cp.name}: juega el piloto automático.`);
+  if (cp.miss >= 2) { cp.bot = true; G.log.push(`🤖 ${cp.name} pasa a ser un robot por no responder.`); }
+  afterChange();
 }
 
 /* ---------- animación / estado local de vista ---------- */
 function onState(newG) {
   G = newG;
-  if (!disp) { disp = {}; G.players.forEach(p => disp[p.id] = p.pos); lastRollId = G.rollId; shownDice = G.dice.slice(); if (G.card) shownCardN = G.card.n; }
+  if (!disp) { disp = {}; G.players.forEach(p => disp[p.id] = p.pos); lastRollId = G.rollId; shownDice = G.dice.slice(); if (G.card) shownCardN = G.card.n; shownFx = G.fx ? G.fx.n : 0; prevTurnKey = G.turns + '|' + G.turn; prevOwned = Object.keys(G.props).filter(k => G.props[k].o).length; $('#dw0') && (setCube(0, shownDice[0], false), setCube(1, shownDice[1], false)); }
   const rolled = G.rollId !== lastRollId; lastRollId = G.rollId;
+  const tk = G.turns + '|' + G.turn;
+  if (prevTurnKey && tk !== prevTurnKey && !G.winner && (isLocal() || E.cur(G).id === me) && !E.cur(G).bot) setTimeout(SFX.turn, 300);
+  prevTurnKey = tk;
+  const owned = Object.keys(G.props).filter(k => G.props[k].o).length;
+  if (prevOwned >= 0 && owned > prevOwned) setTimeout(SFX.buy, rolled ? 1300 : 200);
+  prevOwned = owned;
   if (rolled) rollAnim();
   const need = G.players.some(p => disp[p.id] !== p.pos);
-  if (need) { animating = true; setTimeout(ensureMoving, rolled ? 800 : 50); }
+  if (need) { animating = true; setTimeout(ensureMoving, rolled ? 1250 : 50); }
   if (screen === 'game') renderAll();
 }
 function rollAnim() {
@@ -1131,6 +1285,14 @@ function ensureMoving() {
     if (!any) { clearInterval(moveTimer); moveTimer = null; animating = false; if (screen === 'game') { renderAll(); popCard(); } }
   }, 130);
 }
+function popFx() {
+  if (!G || !G.fx || G.fx.n <= shownFx) return;
+  shownFx = G.fx.n; const f = G.fx;
+  const to = f.to === 'bank' ? 'al banco' : f.to === 'each' ? 'a todos los jugadores' : 'a ' + plr(f.to).name;
+  const el = document.createElement('div'); el.className = 'fxbar';
+  el.innerHTML = `<span class="amt">−${Math.round(f.to === 'each' ? f.amt / Math.max(1, G.players.filter(q => !q.out).length - 1) : f.amt)} €${f.to === 'each' ? ' a cada uno' : ''}</span> ${av(f.from, 'xs')} <b>${esc(plr(f.from).name)}</b> paga ${esc(to)}${f.why ? '<br><small>' + esc(f.why) + '</small>' : ''}`;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 3600); SFX.cash();
+}
 function popCard() {
   if (!G || !G.card || G.card.n <= shownCardN) return;
   shownCardN = G.card.n;
@@ -1141,14 +1303,17 @@ function popCard() {
 }
 
 /* ======================= RENDER JUEGO ======================= */
-function renderAll() { if (screen !== 'game' || !G) return; renderTop(); renderBoard(); renderCenter(); renderActions(); renderTabs(); if (!animating) popCard(); if (G.winner && !lastWinnerShown) { lastWinnerShown = true; showWinner(); } }
+function renderAll() { if (screen !== 'game' || !G) return; renderTop(); renderBoard(); renderCenter(); renderActions(); renderTabs(); if (!animating) { popCard(); popFx(); } if (G.winner && !lastWinnerShown) { lastWinnerShown = true; showWinner(); } }
 
 function renderTop() {
   const t = $('#top'); if (!t) return;
-  t.innerHTML = G.players.map(p => `<div class="chip ${G.turn === G.players.indexOf(p) && !G.winner ? 'turn' : ''} ${p.out ? 'out' : ''}">${av(p.id, 'xs')}<div><b>${esc(p.name)}${p.bot ? ' 🤖' : ''}${(lobby.find(l => l.id === p.id) || {}).connected === false && !p.bot ? ' ⚠️' : ''}</b><span class="mon">${eur(p.money)}</span>${p.jail ? ' 🔒' : ''}${p.cards.length ? ' 🎫' : ''}</div></div>`).join('')
+  t.innerHTML = G.players.map(p => `<div class="chip ${G.turn === G.players.indexOf(p) && !G.winner ? 'turn' : ''} ${p.out ? 'out' : ''}">${av(p.id, 'xs')}<div><b>${esc(p.name)}${p.bot ? ' 🤖' : ''}${(lobby.find(l => l.id === p.id) || {}).connected === false && !p.bot ? ' ⚠️' : ''}</b><span class="mon">${eur(p.money)}</span>${p.jail ? ' 🔒' : ''}${p.cards.length ? ' 🎫' : ''} <span class="np">🏠${Object.keys(G.props).filter(k => G.props[k].o === p.id).length}</span></div></div>`).join('')
+    + `<div class="chip" id="mute" style="cursor:pointer">${soundOn ? '🔊' : '🔇'}</div>`
     + (net.role === 'host' || net.role === 'client' ? `<div class="chip" style="margin-left:auto"><div><b>Sala</b><span class="mon">${esc(net.room)}</span></div></div>` : '');
+  bindTop();
 }
 
+function bindTop() { const m = $('#mute'); if (m) m.onclick = toggleSound; }
 function cellPos(i) {
   if (i === 0) return [11, 11]; if (i === 10) return [11, 1]; if (i === 20) return [1, 1]; if (i === 30) return [1, 11];
   if (i < 10) return [11, 11 - i]; if (i < 20) return [11 - (i - 10), 1]; if (i < 30) return [1, 1 + (i - 20)]; return [1 + (i - 30), 11];
@@ -1164,33 +1329,65 @@ function renderBoard() {
       const pr = G.props[i];
       const hs = pr.h === 5 ? '<i class="hs H"></i>' : '<i class="hs"></i>'.repeat(pr.h);
       inner = `<div class="band" style="background:${GC[s.g]}">${hs}</div><div class="body"><div class="nm">${esc(s.s)}</div><div class="pr">${s.price}€</div></div>`;
-      if (pr.o) own = `<i class="own" style="background:${plr(pr.o).color}"></i>`; if (pr.m) cls += ' mort';
+      if (pr.o) { own = ownBadge(pr.o); cls += ' owned'; } if (pr.m) cls += ' mort';
     } else if (corner) {
       const ic = { go: '➡️', jail: '🔒', parking: '🌳', gotojail: '👮' }[s.t];
       inner = `<div class="ic">${ic}</div><div>${esc(s.s)}</div>${s.t === 'go' ? '<div class="pr">cobra 200€</div>' : ''}`;
     } else {
       const ic = { chance: '❓', chest: '🏘️', tax: '💶', station: s.n.startsWith('Bus') ? '🚌' : '🚇', utility: s.n.startsWith('Aig') ? '💧' : '💡' }[s.t];
       inner = `<div class="body"><div class="ic">${ic}</div><div class="nm">${esc(s.s)}</div>${s.price ? `<div class="pr">${s.price}€</div>` : ''}${s.amt ? `<div class="pr">${s.amt}€</div>` : ''}</div>`;
-      const pr = G.props[i]; if (pr && pr.o) own = `<i class="own" style="background:${plr(pr.o).color}"></i>`; if (pr && pr.m) cls += ' mort';
+      const pr = G.props[i]; if (pr && pr.o) { own = ownBadge(pr.o); cls += ' owned'; } if (pr && pr.m) cls += ' mort';
     }
     const here = G.players.filter(p => !p.out && disp && disp[p.id] === i);
     const tk = here.map(p => { const ph = avatars[p.id]; const turn = G.players[G.turn] === p && !G.winner ? ' turn' : ''; const jl = p.jail && i === 10 ? ' jailed' : '';
       return ph ? `<span class="tok${turn}${jl}" style="background-image:url('${ph}');border-color:${p.color}"></span>` : `<span class="tok${turn}${jl}" style="background:${p.color}">${p.emoji}</span>`; }).join('');
-    h += `<div class="${cls}" data-i="${i}" style="grid-area:${r}/${col}">${inner}${own}<div class="tks">${tk}</div></div>`;
+    const oc = G.props[i] && G.props[i].o ? `--oc:${plr(G.props[i].o).color};` : '';
+    h += `<div class="${cls}" data-i="${i}" style="${oc}grid-area:${r}/${col}">${inner}${own}<div class="tks">${tk}</div></div>`;
   }
   c.innerHTML = h;
   c.querySelectorAll('.cell').forEach(el => el.onclick = () => showDeed(+el.dataset.i));
 }
 
+function ownBadge(pid) {
+  const p = plr(pid), ph = avatars[pid];
+  return ph ? `<i class="ob" style="background-image:url('${ph}')"></i>` : `<i class="ob" style="background:${p.color}">${p.emoji || ''}</i>`;
+}
 function dieHTML(n, roll) {
   const P = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] }[n];
   let s = ''; for (let i = 0; i < 9; i++) s += `<i class="${P.includes(i) ? 'on' : ''}"></i>`;
   return `<div class="die ${roll ? 'roll' : ''}">${s}</div>`;
 }
+function faceHTML(n) {
+  const P = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] }[n];
+  let h = ''; for (let i = 0; i < 9; i++) h += `<i class="${P.includes(i) ? 'on' : ''}"></i>`;
+  return `<div class="face f${n}">${h}</div>`;
+}
+const ROT = { 1: [0, 0], 2: [-90, 0], 3: [0, -90], 4: [0, 90], 5: [90, 0], 6: [0, 180] };
+function setCube(i, n, anim) {
+  const cb = $('#cb' + i), w = $('#dw' + i); if (!cb) return;
+  const R = ROT[n];
+  cb.style.transition = 'none';
+  if (!anim) { cb.style.transform = `rotateX(${R[0]}deg) rotateY(${R[1]}deg) rotateZ(0deg)`; return; }
+  cb.style.transform = `rotateX(${Math.floor(Math.random() * 360)}deg) rotateY(${Math.floor(Math.random() * 360)}deg) rotateZ(${Math.floor(Math.random() * 360)}deg)`;
+  w.classList.remove('throw'); void cb.offsetWidth;
+  w.classList.add('throw');
+  cb.style.transition = 'transform 1.1s cubic-bezier(.12,.7,.3,1)';
+  cb.style.transform = `rotateX(${R[0] + 720 + i * 360}deg) rotateY(${R[1] + 1080}deg) rotateZ(0deg)`;
+}
 function renderCenter() {
   const c = $('#center'); if (!c || !G) return;
-  const last = G.log[G.log.length - 1] || '';
-  c.innerHTML = `<div class="ttl">BON<br>PASTOPOLI<small>EL BARRI · EN FAMILIA</small></div><div class="dice">${dieHTML(shownDice[0], rolling)}${dieHTML(shownDice[1], rolling)}</div><div class="say">${esc(last)}</div>`;
+  if (!$('#dw0')) {
+    c.innerHTML = `<div class="ttl">BONPASPOLY<small>EL BARRI · EN FAMILIA</small></div>
+      <div class="dice3d">${[0, 1].map(i => `<div class="dwrap" id="dw${i}" style="--sx:${i ? 34 : -34}cqw;animation-delay:${i * .07}s"><div class="cube" id="cb${i}">${[1, 2, 3, 4, 5, 6].map(faceHTML).join('')}</div></div>`).join('')}</div>
+      <div class="say" id="say"></div>`;
+    setCube(0, shownDice[0], false); setCube(1, shownDice[1], false);
+  }
+  const last = G.log[G.log.length - 1] || ''; $('#say').textContent = last;
+}
+function rollAnim() {
+  rolling = true; shownDice = G.dice.slice();
+  setCube(0, shownDice[0], true); setCube(1, shownDice[1], true); SFX.dice();
+  setTimeout(() => { rolling = false; }, 1200);
 }
 
 /* ---------- panel de acciones ---------- */
@@ -1248,7 +1445,7 @@ function renderActions() {
   if (q('bRank')) q('bRank').onclick = showWinner; if (q('bMenu')) q('bMenu').onclick = () => { teardown(); show('home'); };
   box.querySelectorAll('[data-bid]').forEach(b => b.onclick = () => { const [pid, add] = b.dataset.bid.split('|'); const a = G.auction; dispatch({ k: 'bid', pid, amt: Math.max(10, a.bid + (+add)) }); });
   box.querySelectorAll('[data-pass]').forEach(b => b.onclick = () => dispatch({ k: 'pass', pid: b.dataset.pass }));
-  if (q('bClose')) q('bClose').onclick = () => dispatch({ k: 'closeAuction', pid: E.cur(G).id });
+  if (q('bClose')) q('bClose').onclick = () => dispatch({ k: 'closeAuction', pid: anyAlive() });
 }
 
 function auctionHTML() {
@@ -1294,8 +1491,8 @@ function renderTabs() {
   body.querySelectorAll('[data-act]').forEach(b => b.onclick = () => dispatch(JSON.parse(b.dataset.act)));
   body.querySelectorAll('[data-view]').forEach(b => b.onclick = () => { localView = b.dataset.view; renderTabs(); });
   body.querySelectorAll('[data-deed]').forEach(b => b.onclick = () => showDeed(+b.dataset.deed));
-  body.querySelectorAll('[data-bot]').forEach(b => b.onclick = () => dispatch({ k: 'toggleBot', pid: E.cur(G).id, target: b.dataset.bot }));
-  const fin = body.querySelector('#bFinish'); if (fin) fin.onclick = () => { if (confirm('¿Cerrar la partida ahora? Gana quien tenga más patrimonio.')) dispatch({ k: 'finishByWorth', pid: E.cur(G).id }); };
+  body.querySelectorAll('[data-bot]').forEach(b => b.onclick = () => dispatch({ k: 'toggleBot', pid: anyAlive(), target: b.dataset.bot }));
+  const fin = body.querySelector('#bFinish'); if (fin) fin.onclick = () => { if (confirm('¿Cerrar la partida ahora? Gana quien tenga más patrimonio.')) dispatch({ k: 'finishByWorth', pid: anyAlive() }); };
 }
 
 function propsTab() {
@@ -1325,11 +1522,17 @@ function propsTab() {
   });
   return h;
 }
+function ownChips(pid) {
+  return Object.keys(G.props).map(Number).filter(i => G.props[i].o === pid).sort((a, b) => a - b).map(i => {
+    const s = BOARD[i], pr = G.props[i], ic = s.t === 'station' ? (s.n.startsWith('Bus') ? '🚌' : '🚇') : s.t === 'utility' ? (s.n.startsWith('Aig') ? '💧' : '💡') : (pr.h === 5 ? '🏨' : pr.h ? pr.h : '');
+    return `<span class="pc ${pr.m ? 'm' : ''}" data-deed="${i}" style="background:${s.g ? GC[s.g] : '#cfd8dc'}" title="${esc(s.n)}">${ic}</span>`;
+  }).join('') || '<span class="muted">—</span>';
+}
 function playersTab() {
   const r = G.players.map(p => {
     const n = Object.keys(G.props).filter(i => G.props[i].o === p.id).length;
     const l = lobby.find(x => x.id === p.id) || {};
-    return `<div class="pl">${av(p.id)}<div class="grow"><b>${esc(p.name)}</b> ${p.bot ? '🤖' : ''}${p.out ? ' · fuera' : ''}${p.jail ? ' · 🔒' : ''}${l.connected === false && !p.bot ? ' · ⚠️ desconectado' : ''}<div class="muted">${eur(p.money)} · ${n} propiedades · patrimonio ${eur(E.netWorth(G, p))}</div></div>${isHost() && !p.out ? `<button class="sm dark" data-bot="${p.id}">${p.bot ? 'Quitar robot' : 'Que juegue un robot'}</button>` : ''}</div>`;
+    return `<div class="pl">${av(p.id)}<div class="grow"><b>${esc(p.name)}</b> ${p.bot ? '🤖' : ''}${p.out ? ' · fuera' : ''}${p.jail ? ' · 🔒' : ''}${l.connected === false && !p.bot ? ' · ⚠️ desconectado' : ''}<div class="muted">${eur(p.money)} · ${n} propiedades · patrimonio ${eur(E.netWorth(G, p))}</div><div class="chips">${ownChips(p.id)}</div></div>${isHost() && !p.out ? `<button class="sm dark" data-bot="${p.id}">${p.bot ? 'Quitar robot' : 'Que juegue un robot'}</button>` : ''}</div>`;
   }).join('');
   return r + (isHost() ? '<button class="dark sm" id="bFinish">⏱ Cerrar partida por patrimonio</button>' : '');
 }
@@ -1370,8 +1573,9 @@ function showDeed(i) {
 
 function showWinner() {
   if (!G || !G.winner) return;
+  if (!showWinner.s) { showWinner.s = 1; SFX.win(); }
   const rk = G.players.slice().sort((a, b) => (b.id === G.winner) - (a.id === G.winner) || E.netWorth(G, b) - E.netWorth(G, a));
-  modal(`<h2 style="text-align:center">🏆 ¡${esc(plr(G.winner).name)} gana el Bon Pastopoli!</h2>${rk.map((p, i) => `<div class="rank"><b>${i + 1}.</b>${av(p.id)}<span class="grow">${esc(p.name)}${p.out ? ' (bancarrota)' : ''}</span><b>${p.out ? '—' : eur(E.netWorth(G, p))}</b></div>`).join('')}<button onclick="__bpClose()">Cerrar</button>`);
+  modal(`<h2 style="text-align:center">🏆 ¡${esc(plr(G.winner).name)} gana BonPasPoly!</h2>${rk.map((p, i) => `<div class="rank"><b>${i + 1}.</b>${av(p.id)}<span class="grow">${esc(p.name)}${p.out ? ' (bancarrota)' : ''}</span><b>${p.out ? '—' : eur(E.netWorth(G, p))}</b></div>`).join('')}<button onclick="__bpClose()">Cerrar</button>`);
 }
 
 /* ---------- tratos ---------- */
